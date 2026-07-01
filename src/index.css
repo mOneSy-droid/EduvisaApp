@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0B1C2C;
+  --color-gold: #D6B174;
+  --color-gold-hover: #B99056;
+  --color-navy-gold-text: #031222;
+  --color-soft: #F7F9FA;
+  --color-sec-bg: #F3F5F8;
+  --color-border-div: #E5E8EB;
+  --color-pri-text: #212630;
+  --color-muted-text: #6A727D;
+  --color-error: #E40016;
+
+  --color-success: #1E9E5A;
+  --color-pending: #D6B174;
+
+  --font-display: "Playfair Display", serif;
+  --font-sans: "Inter", sans-serif;
+
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #F3F5F8;
+  color: #212630;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Shimmer layout effect for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, #F3F5F8 25%, #E5E8EB 50%, #F3F5F8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Hide scrollbars for bottom nav */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

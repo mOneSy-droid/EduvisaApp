@@ -1,0 +1,6 @@
+{
+  "name": "EduVisa",
+  "description": "Student PWA — Universitetlarga ariza topshirish va AI Konsultant",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_OPENAI_API"]
+}
