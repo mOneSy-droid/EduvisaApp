@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS users (
   first_name            TEXT NOT NULL,
   last_name             TEXT NOT NULL,
   phone                 TEXT,
+  email                 TEXT,
   budget                INTEGER,
   ielts_score           NUMERIC(3,1),
   has_ielts             BOOLEAN,
@@ -139,6 +140,9 @@ ALTER TABLE applications ADD COLUMN IF NOT EXISTS contact_phone TEXT;
 ALTER TABLE application_documents ADD COLUMN IF NOT EXISTS size TEXT;
 ALTER TABLE application_documents ADD COLUMN IF NOT EXISTS file_data BYTEA;
 ALTER TABLE application_documents ADD COLUMN IF NOT EXISTS mime_type TEXT;
+
+-- Foydalanuvchilar (users) uchun email ustuni qo'shish
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_applications_username ON applications(username);
 CREATE INDEX IF NOT EXISTS idx_documents_username ON documents(username);

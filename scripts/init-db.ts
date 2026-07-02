@@ -98,12 +98,24 @@ async function run() {
   // 3) Demo foydalanuvchilar (talaba + admin)
   console.log('[3/3] Demo foydalanuvchilar tekshirilmoqda...');
 
+  const dummyPdf = Buffer.from(
+    '%PDF-1.4\n' +
+    '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n' +
+    '2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n' +
+    '3 0 obj\n<< /Type /Page /Parent 2 0 R /Resources << >> /MediaBox [0 0 612 792] /Contents 4 0 R >>\nendobj\n' +
+    '4 0 obj\n<< /Length 51 >>\nstream\n' +
+    'BT\n/F1 12 Tf\n72 712 Td\n(Eduvisa Demo Document) Tj\nET\n' +
+    'endstream\nendobj\n' +
+    'xref\n0 5\n0000000000 65535 f\n0000000009 00000 n\n0000000058 00000 n\n0000000115 00000 n\n0000000222 00000 n\n' +
+    'trailer\n<< /Size 5 /Root 1 0 R >>\nstartxref\n322\n%%EOF'
+  );
+
   const { rows: existingDemo } = await pool.query('SELECT username FROM users WHERE username = $1', ['aziz_karimov']);
   if (existingDemo.length === 0) {
     await pool.query(
-      `INSERT INTO users (username, password, first_name, last_name, phone, budget, ielts_score, has_ielts, gpa, has_gpa, onboarding_completed, telegram_chat_id, last_login_ip, role)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
-      ['aziz_karimov', 'Xk9mPq2T', 'Aziz', 'Karimov', '+998901234567', 6000, 7.5, true, 4.8, true, true, '998124', '127.0.0.1', 'student']
+      `INSERT INTO users (username, password, first_name, last_name, phone, email, budget, ielts_score, has_ielts, gpa, has_gpa, onboarding_completed, telegram_chat_id, last_login_ip, role)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`,
+      ['aziz_karimov', 'Xk9mPq2T', 'Aziz', 'Karimov', '+998901234567', 'aziz.karimov@example.com', 6000, 7.5, true, 4.8, true, true, '998124', '127.0.0.1', 'student']
     );
 
     await pool.query(`INSERT INTO interests (username, university_id) VALUES ($1,$2), ($1,$3)`, ['aziz_karimov', 'u1', 'u2']);
@@ -111,23 +123,23 @@ async function run() {
     const app1Id = 'app_1';
     const app2Id = 'app_2';
     await pool.query(
-      `INSERT INTO applications (id, username, university_id, university_name, program, status, date)
-       VALUES ($1,$2,$3,$4,$5,$6,$7)`,
-      [app1Id, 'aziz_karimov', 'u1', 'University of London', 'Moliya va Bank', "🟡 Ko'rib chiqilyapti", '2026-06-12']
+      `INSERT INTO applications (id, username, university_id, university_name, program, status, date, contact_email, contact_phone)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+      [app1Id, 'aziz_karimov', 'u1', 'University of London', 'Moliya va Bank', "🟡 Ko'rib chiqilyapti", '2026-06-12', 'aziz.karimov@example.com', '+998901234567']
     );
     await pool.query(
       `INSERT INTO application_history (application_id, status, date, note) VALUES ($1,$2,$3,$4)`,
       [app1Id, "🟡 Arizaga start berildi", '2026-06-12', 'Ariza tizimga muvaffaqiyatli qabul qilindi.']
     );
     await pool.query(
-      `INSERT INTO application_documents (application_id, name, type, status) VALUES ($1,$2,$3,$4), ($1,$5,$6,$7)`,
-      [app1Id, 'passport.pdf', 'Pasport', 'Tasdiqlangan', 'ielts_certificate.pdf', 'IELTS Sertifikati', 'Tasdiqlangan']
+      `INSERT INTO application_documents (application_id, name, type, status, file_data, mime_type) VALUES ($1,$2,$3,$4,$8,$9), ($1,$5,$6,$7,$8,$9)`,
+      [app1Id, 'passport.pdf', 'Pasport', 'Tasdiqlangan', 'ielts_certificate.pdf', 'IELTS Sertifikati', 'Tasdiqlangan', dummyPdf, 'application/pdf']
     );
 
     await pool.query(
-      `INSERT INTO applications (id, username, university_id, university_name, program, status, date)
-       VALUES ($1,$2,$3,$4,$5,$6,$7)`,
-      [app2Id, 'aziz_karimov', 'u6', 'Yonsei University', 'Xalqaro Biznes (Underwood)', "🟢 Tasdiqlangan / Qabul qilingan", '2026-06-05']
+      `INSERT INTO applications (id, username, university_id, university_name, program, status, date, contact_email, contact_phone)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+      [app2Id, 'aziz_karimov', 'u6', 'Yonsei University', 'Xalqaro Biznes (Underwood)', "🟢 Tasdiqlangan / Qabul qilingan", '2026-06-05', 'aziz.karimov@example.com', '+998901234567']
     );
     await pool.query(
       `INSERT INTO application_history (application_id, status, date, note) VALUES
@@ -136,17 +148,18 @@ async function run() {
        "🟢 Tasdiqlangan", '2026-06-20', 'Universitet sizga rasmiy taklifnoma yubordi! Tabriklaymiz!']
     );
     await pool.query(
-      `INSERT INTO application_documents (application_id, name, type, status) VALUES ($1,$2,$3,$4), ($1,$5,$6,$7)`,
-      [app2Id, 'passport.pdf', 'Pasport', 'Tasdiqlangan', 'diplom_va_ilova.pdf', 'Diplom / Attestat', 'Tasdiqlangan']
+      `INSERT INTO application_documents (application_id, name, type, status, file_data, mime_type) VALUES ($1,$2,$3,$4,$8,$9), ($1,$5,$6,$7,$8,$9)`,
+      [app2Id, 'passport.pdf', 'Pasport', 'Tasdiqlangan', 'diplom_va_ilova.pdf', 'Diplom / Attestat', 'Tasdiqlangan', dummyPdf, 'application/pdf']
     );
 
     await pool.query(
-      `INSERT INTO documents (username, name, type, size, status, url) VALUES
-        ($1,$2,$3,$4,$5,$6), ($1,$7,$8,$9,$5,$10), ($1,$11,$12,$13,$5,$14)`,
+      `INSERT INTO documents (username, name, type, size, status, url, file_data, mime_type) VALUES
+        ($1,$2,$3,$4,$5,$6,$15,$16), ($1,$7,$8,$9,$5,$10,$15,$16), ($1,$11,$12,$13,$5,$14,$15,$16)`,
       ['aziz_karimov',
        'passport.pdf', 'Pasport', '1.2 MB', 'Tasdiqlangan', '#',
        'ielts_certificate.pdf', 'IELTS Sertifikati', '850 KB', '#',
-       'diplom_va_ilova.pdf', 'Diplom / Attestat', '2.4 MB', '#']
+       'diplom_va_ilova.pdf', 'Diplom / Attestat', '2.4 MB', '#',
+       dummyPdf, 'application/pdf']
     );
 
     await pool.query(
@@ -162,9 +175,9 @@ async function run() {
   const { rows: existingAdmin } = await pool.query('SELECT username FROM users WHERE username = $1', ['admin']);
   if (existingAdmin.length === 0) {
     await pool.query(
-      `INSERT INTO users (username, password, first_name, last_name, phone, onboarding_completed, role)
-       VALUES ($1,$2,$3,$4,$5,$6,$7)`,
-      ['admin', 'admin123', 'Tizim', 'Administratori', '+998909999999', true, 'admin']
+      `INSERT INTO users (username, password, first_name, last_name, phone, email, onboarding_completed, role)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`,
+      ['admin', 'admin123', 'Tizim', 'Administratori', '+998909999999', 'admin@eduvisa.uz', true, 'admin']
     );
     console.log('    ✔ Admin (admin / admin123) yaratildi.');
   } else {

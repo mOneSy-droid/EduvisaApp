@@ -41,6 +41,7 @@ const APPLICATION_DOC_FIELDS: { field: string; label: string }[] = [
   { field: 'birthCert', label: "Metrika (Tug'ilganlik guvohnomasi)" },
   { field: 'idCard', label: 'ID Karta' },
   { field: 'foreignPassport', label: 'Zagran pasport' },
+  { field: 'attestat', label: '9-11 sinf attestati' },
 ];
 const uploadApplicationDocs = multer({
   storage: multer.memoryStorage(),
@@ -896,6 +897,81 @@ async function main() {
       res.json({ success: true, document: rows[0] });
     } catch (err) {
       console.error('admin patch document xatolik:', err);
+      res.status(500).json({ error: 'Server xatoligi' });
+    }
+  });
+
+  // GET /api/admin/universities
+  app.get('/api/admin/universities', authMiddleware, async (req: Request, res: Response) => {
+    try {
+      const admin = (req as any).user;
+      if (admin.role !== 'admin') {
+        return res.status(403).json({ error: 'Sizda ushbu sahifaga kirish huquqi yo\'q' });
+      }
+      const list = await getAllUniversities();
+      res.json(list);
+    } catch (err) {
+      console.error('admin universities xatolik:', err);
+      res.status(500).json({ error: 'Server xatoligi' });
+    }
+  });
+
+  // POST /api/admin/universities — admin yangi universitet qo'shadi
+  app.post('/api/admin/universities', authMiddleware, async (req: Request, res: Response) => {
+    try {
+      const admin = (req as any).user;
+      if (admin.role !== 'admin') {
+        return res.status(403).json({ error: 'Sizda ushbu sahifaga kirish huquqi yo\'q' });
+      }
+
+      const { name, country, logo, budget, ielts, gpa, grantInfo, programs, description } = req.body;
+      if (!name || !country) {
+        return res.status(400).json({ error: 'Universitet nomi va davlat kiritilishi shart' });
+      }
+
+      const newId = 'uni_' + Date.now();
+      const programsArray = Array.isArray(programs) ? programs : (programs ? [programs] : ['Bakalavr']);
+
+      const { rows } = await pool.query(
+        `INSERT INTO universities (id, name, country, logo, budget, ielts, gpa, grant_info, programs, description)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+         RETURNING *`,
+        [
+          newId,
+          name.trim(),
+          country.trim(),
+          logo || '🏫',
+          budget ? Number(budget) : 5000,
+          ielts ? Number(ielts) : 0,
+          gpa ? Number(gpa) : 0,
+          grantInfo || 'Ma\'lumot yo\'q',
+          programsArray,
+          description || ''
+        ]
+      );
+
+      // Keshni yangilash
+      (globalThis as any).__universitiesCache = await getAllUniversities();
+
+      res.json({ success: true, university: mapUniversityRow(rows[0]) });
+    } catch (err) {
+      console.error('admin add university xatolik:', err);
+      res.status(500).json({ error: 'Server xatoligi' });
+    }
+  });
+
+  // DELETE /api/admin/universities/:id
+  app.delete('/api/admin/universities/:id', authMiddleware, async (req: Request, res: Response) => {
+    try {
+      const admin = (req as any).user;
+      if (admin.role !== 'admin') {
+        return res.status(403).json({ error: 'Sizda ushbu sahifaga kirish huquqi yo\'q' });
+      }
+      await pool.query('DELETE FROM universities WHERE id = $1', [req.params.id]);
+      (globalThis as any).__universitiesCache = await getAllUniversities();
+      res.json({ success: true });
+    } catch (err) {
+      console.error('admin delete university xatolik:', err);
       res.status(500).json({ error: 'Server xatoligi' });
     }
   });

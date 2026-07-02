@@ -141,6 +141,7 @@ export default function App() {
   const [applyBirthCertFile, setApplyBirthCertFile] = useState<File | null>(null);
   const [applyIdCardFile, setApplyIdCardFile] = useState<File | null>(null);
   const [applyForeignPassportFile, setApplyForeignPassportFile] = useState<File | null>(null);
+  const [applyAttestatFile, setApplyAttestatFile] = useState<File | null>(null);
   const [isSubmittingApp, setIsSubmittingApp] = useState<boolean>(false);
 
   const resetApplyForm = () => {
@@ -156,6 +157,7 @@ export default function App() {
     setApplyBirthCertFile(null);
     setApplyIdCardFile(null);
     setApplyForeignPassportFile(null);
+    setApplyAttestatFile(null);
   };
   
   // Search & Filter
@@ -574,8 +576,8 @@ export default function App() {
       showToast('Email va aloqa telefon raqamini kiriting', 'error');
       return;
     }
-    if (!applyPassportFile || !applyPhoto3x4File || !applyBirthCertFile || !applyIdCardFile || !applyForeignPassportFile) {
-      showToast('Barcha hujjatlarni (pasport, 3x4 rasm, metrika, ID karta, zagran pasport) yuklang', 'error');
+    if (!applyPassportFile || !applyPhoto3x4File || !applyBirthCertFile || !applyIdCardFile || !applyForeignPassportFile || !applyAttestatFile) {
+      showToast('Barcha hujjatlarni (pasport, 3x4 rasm, metrika, ID karta, zagran pasport, attestat) yuklang', 'error');
       return;
     }
 
@@ -595,6 +597,7 @@ export default function App() {
       if (applyBirthCertFile) formData.append('birthCert', applyBirthCertFile);
       if (applyIdCardFile) formData.append('idCard', applyIdCardFile);
       if (applyForeignPassportFile) formData.append('foreignPassport', applyForeignPassportFile);
+      if (applyAttestatFile) formData.append('attestat', applyAttestatFile);
 
       const data = await apiFetch('/api/applications', {
         method: 'POST',
@@ -1060,10 +1063,10 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F3F5F8] text-[#212630] font-sans flex flex-col lg:flex-row">
+    <div className="min-h-screen text-[#E8EDF2] font-sans flex flex-col lg:flex-row" style={{ background: 'linear-gradient(135deg, #071320 0%, #0B1C2C 50%, #0D2236 100%)' }}>
       
       {/* Sidebar - Desktop Navigation (>= 1024px) */}
-      <aside className="hidden lg:flex w-72 bg-[#0B1C2C] text-white flex-col h-screen shrink-0 sticky top-0 border-r border-white/5">
+      <aside className="hidden lg:flex w-72 text-white flex-col h-screen shrink-0 sticky top-0 z-20" style={{ background: 'linear-gradient(180deg, #071320 0%, #0B1C2C 100%)', borderRight: '1px solid rgba(214,177,116,0.1)' }}>
         <div className="p-8">
           <div className="flex items-center space-x-3">
             <img src={logoImg} alt="EDUVISA Logo" className="h-10 w-10 object-contain rounded-lg shrink-0" referrerPolicy="no-referrer" />
@@ -1080,7 +1083,7 @@ export default function App() {
         {/* User Mini Profile */}
         {user && (
           <div className="px-6 mb-6">
-            <div className="bg-white/5 rounded-2xl p-4 border border-white/10 flex items-center space-x-3">
+            <div className="rounded-2xl p-4 flex items-center space-x-3" style={{ background: 'rgba(214,177,116,0.06)', border: '1px solid rgba(214,177,116,0.15)' }}>
               <div className="w-10 h-10 rounded-full bg-[#D6B174]/20 border border-[#D6B174]/40 flex items-center justify-center text-[#D6B174] font-bold">
                 {user.firstName[0]}{user.lastName[0]}
               </div>
@@ -1152,7 +1155,7 @@ export default function App() {
         {/* Sidebar Mini Card */}
         {user && (
           <div className="p-6 border-t border-white/5">
-            <div className="bg-[#D6B174]/5 rounded-2xl p-4 border border-[#D6B174]/15">
+            <div className="rounded-2xl p-4" style={{ background: 'rgba(214,177,116,0.06)', border: '1px solid rgba(214,177,116,0.12)' }}>
               <p className="text-[10px] text-[#D6B174] uppercase font-bold tracking-wider mb-2">Profil O'lchovlari</p>
               <div className="space-y-1.5 text-xs text-white/90">
                 <div className="flex justify-between">
@@ -1197,33 +1200,33 @@ export default function App() {
       )}
 
       {/* MAIN SCREEN ROUTING CONTENT */}
-      <main className="flex-1 flex flex-col min-w-0 p-4 md:p-8 lg:p-10 overflow-y-auto pb-24 lg:pb-10 max-w-7xl mx-auto w-full">
+      <main className="flex-1 flex flex-col min-w-0 p-4 md:p-8 lg:p-10 overflow-y-auto lg:h-screen pb-24 lg:pb-10 max-w-7xl mx-auto w-full">
         
         {/* TAB 1: BOSH SAHIFA (HOME) */}
         {activeTab === 'home' && (
           <div className="space-y-6 animate-fadeIn">
             
             {/* Elegant Welcome Banner */}
-            <div className="bg-white border border-[#E5E8EB] p-6 md:p-8 rounded-3xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm relative overflow-hidden">
+            <div className="p-6 md:p-8 rounded-3xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 relative overflow-hidden" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.15)' }}>
               <div className="relative z-10 space-y-1">
                 <p className="text-[#D6B174] text-xs font-bold uppercase tracking-wider">Xush kelibsiz</p>
-                <h2 className="text-2xl md:text-3xl font-bold font-display text-[#0B1C2C]">
+                <h2 className="text-2xl md:text-3xl font-bold font-display text-white">
                   Salom, {user?.firstName} {user?.lastName}!
                 </h2>
-                <p className="text-xs text-[#6A727D] max-w-md">
+                <p className="text-xs text-[#4A6A8A] max-w-md">
                   Sizning profilingiz bo'yicha eng yaxshi imkoniyatlar tahlil qilindi. Bugungi universitet va grant tavsiyalaringiz tayyor.
                 </p>
               </div>
               <div className="relative z-10 flex gap-2 w-full md:w-auto">
                 <button 
                   onClick={() => { setActiveTab('universities'); setSelectedCountry(null); }} 
-                  className="flex-1 md:flex-none bg-[#0B1C2C] text-[#D6B174] px-5 py-3 rounded-2xl font-bold text-xs hover:bg-[#B99056] hover:text-[#031222] transition-colors shadow-md"
+                  className="flex-1 md:flex-none px-5 py-3 rounded-2xl font-bold text-xs transition-all hover:scale-[1.02]" style={{ background: 'linear-gradient(135deg,#D6B174,#C49A52)', color: '#031222' }}
                 >
                   Davlatlarni ko'rish
                 </button>
                 <button 
                   onClick={() => setActiveTab('ai')}
-                  className="flex-1 md:flex-none bg-[#D6B174]/10 text-[#0B1C2C] border border-[#D6B174]/30 px-5 py-3 rounded-2xl font-bold text-xs hover:bg-[#D6B174]/20 transition-colors"
+                  className="flex-1 md:flex-none text-[#D6B174] px-5 py-3 rounded-2xl font-bold text-xs transition-all hover:bg-[#D6B174]/10" style={{ border: '1px solid rgba(214,177,116,0.3)' }}
                 >
                   AI Konsultatsiya
                 </button>
@@ -1231,104 +1234,76 @@ export default function App() {
               <div className="absolute -right-16 -bottom-16 w-44 h-44 border-[16px] border-[#D6B174]/10 rounded-full"></div>
             </div>
 
-            {/* Grid Layout: Recommended Unis & Application Stages */}
+            {/* Grid Layout: News & Quick Stats */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               
-              {/* Left Column: Recommended Universities (8 Cols) */}
+              {/* Left Column: Yangiliklar / Foydali ma'lumotlar (8 Cols) */}
               <div className="lg:col-span-8 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-bold font-display text-[#0B1C2C] flex items-center gap-2">
-                    <Award className="w-5 h-5 text-[#D6B174]" /> Sizga mos universitetlar
+                  <h3 className="text-lg font-bold font-display text-white flex items-center gap-2">
+                    <Bell className="w-5 h-5 text-[#D6B174]" /> Yangiliklar va Foydali Ma'lumotlar
                   </h3>
-                  <button 
-                    onClick={() => {
-                      setUniFilterMatch(true);
-                      setSelectedCountry(null);
-                      setActiveTab('universities');
-                    }}
-                    className="text-xs text-[#D6B174] font-bold hover:underline"
-                  >
-                    Barchasi
-                  </button>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {recommendedUniversities.length > 0 ? (
-                    recommendedUniversities.map((uni) => (
-                      <div 
-                        key={uni.id} 
-                        className="bg-white border border-[#E5E8EB] p-5 rounded-2xl flex flex-col justify-between hover:border-[#D6B174] transition-all cursor-pointer group shadow-sm hover:shadow-md"
-                        onClick={() => setSelectedUni(uni)}
-                      >
-                        <div className="flex justify-between items-start mb-3">
-                          <div className="flex items-center space-x-3">
-                            <span className="text-2xl p-1.5 bg-[#F3F5F8] rounded-xl">{uni.logo}</span>
-                            <div>
-                              <h4 className="text-sm font-bold text-[#0B1C2C] group-hover:text-[#D6B174] transition-colors truncate max-w-[170px]">{uni.name}</h4>
-                              <p className="text-[11px] text-[#6A727D]">{uni.country}</p>
-                            </div>
-                          </div>
-                          <span className="bg-[#1E9E5A]/10 text-[#1E9E5A] text-[9px] px-2 py-0.5 rounded-full font-bold uppercase">Sizga mos</span>
-                        </div>
-
-                        <p className="text-xs text-[#6A727D] line-clamp-2 mb-4 leading-relaxed">
-                          {uni.description}
-                        </p>
-
-                        <div className="flex items-center justify-between pt-3 border-t border-[#E5E8EB] text-xs">
-                          <span className="font-mono text-xs font-bold text-[#0B1C2C]">${uni.budget.toLocaleString()}/y</span>
-                          <span className="text-[11px] text-[#6A727D]">IELTS: {uni.ielts}+</span>
-                        </div>
+                  {[
+                    { emoji: '🎓', title: '2026 Yilgi Grantlar Ochiq!', desc: 'Buyuk Britaniya, Germaniya va Janubiy Koreyada yangi grantlar e\'lon qilindi. Hoziroq ariza toping!', tag: 'Grant', tagColor: 'bg-emerald-500/15 text-emerald-400' },
+                    { emoji: '📋', title: 'Hujjatlar Tayyorlash Bo\'yicha Qo\'llanma', desc: 'Attestat, pasport va boshqa hujjatlarni to\'g\'ri tayyorlash bo\'yicha to\'liq qo\'llanma.', tag: 'Qo\'llanma', tagColor: 'bg-blue-500/15 text-blue-400' },
+                    { emoji: '🤖', title: 'AI Konsultant Yangilandi', desc: 'Endi AI konsultant sizning IELTS va GPA balingizga qarab eng mos universitetlarni real vaqtda tahlil qiladi.', tag: 'Yangilik', tagColor: 'bg-purple-500/15 text-purple-400' },
+                    { emoji: '✈️', title: 'Viza Jarayoni Haqida', desc: 'Talaba vizasi olish uchun kerakli hujjatlar va qadamlar bo\'yicha batafsil ma\'lumot.', tag: 'Ma\'lumot', tagColor: 'bg-amber-500/15 text-amber-400' },
+                  ].map((news, idx) => (
+                    <div key={idx} className="p-5 rounded-2xl flex flex-col justify-between transition-all hover:scale-[1.01] group cursor-pointer" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
+                      <div className="flex justify-between items-start mb-3">
+                        <span className="text-2xl p-1.5 rounded-xl" style={{ background: 'rgba(214,177,116,0.08)' }}>{news.emoji}</span>
+                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold ${news.tagColor}`}>{news.tag}</span>
                       </div>
-                    ))
-                  ) : (
-                    <div className="col-span-2 bg-white border border-[#E5E8EB] rounded-2xl p-8 text-center text-[#6A727D]">
-                      Hozircha sizning profilingiz bo'yicha mos universitetlar topilmadi. Profil ma'lumotlarini o'zgartirib ko'ring.
+                      <h4 className="text-sm font-bold text-white group-hover:text-[#D6B174] transition-colors mb-2">{news.title}</h4>
+                      <p className="text-xs text-[#4A6A8A] line-clamp-2 leading-relaxed">{news.desc}</p>
                     </div>
-                  )}
+                  ))}
                 </div>
               </div>
 
-              {/* Right Column: Application Status & Notifications (4 Cols) */}
+              {/* Right Column: Application Status & AI Widget (4 Cols) */}
               <div className="lg:col-span-4 space-y-6">
                 
                 {/* Applications Status card */}
-                <div className="bg-white border border-[#E5E8EB] rounded-2xl p-6 shadow-sm">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#6A727D] mb-4">Arizalarim holati</h4>
+                <div className="rounded-2xl p-6" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-4">Arizalarim holati</h4>
                   
                   {applications.length > 0 ? (
                     <div className="space-y-4">
                       {applications.slice(0, 2).map((app) => (
-                        <div key={app.id} className="flex items-center space-x-3 p-2 hover:bg-[#F7F9FA] rounded-xl transition-all">
+                        <div key={app.id} className="flex items-center space-x-3 p-2 hover:bg-white/3 rounded-xl transition-all">
                           <span className="text-xl">
                             {app.status.includes('Ko\'rib') ? '🟡' : app.status.includes('Tasdiq') ? '🟢' : '🔴'}
                           </span>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-[#0B1C2C] truncate">{app.universityName}</p>
-                            <p className="text-[10px] text-[#6A727D] truncate">{app.program}</p>
+                            <p className="text-xs font-bold text-white truncate">{app.universityName}</p>
+                            <p className="text-[10px] text-[#4A6A8A] truncate">{app.program}</p>
                           </div>
-                          <span className="text-[10px] font-mono text-[#6A727D]">{app.date}</span>
+                          <span className="text-[10px] font-mono text-[#4A6A8A]">{app.date}</span>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-6 text-xs text-[#6A727D]">
+                    <div className="text-center py-6 text-xs text-[#4A6A8A]">
                       Hozircha ariza topshirilmagan.
                     </div>
                   )}
 
                   <button 
                     onClick={() => setActiveTab('applications')}
-                    className="w-full mt-4 py-2 text-center border border-[#E5E8EB] hover:bg-[#F3F5F8] rounded-xl text-xs font-bold transition-all text-[#0B1C2C]"
+                    className="w-full mt-4 py-2 text-center rounded-xl text-xs font-bold transition-all text-[#D6B174] hover:bg-[#D6B174]/10" style={{ border: '1px solid rgba(214,177,116,0.2)' }}
                   >
                     Barcha arizalarim
                   </button>
                 </div>
 
                 {/* AI Advisor Mini Widget */}
-                <div className="bg-[#0B1C2C] text-white rounded-2xl p-5 border border-white/5 relative overflow-hidden shadow-md flex flex-col justify-between min-h-[180px]">
+                <div className="text-white rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between min-h-[180px]" style={{ background: 'linear-gradient(135deg, rgba(22,40,64,0.9), rgba(11,28,44,0.95))', border: '1px solid rgba(214,177,116,0.15)' }}>
                   <div className="relative z-10 flex items-center space-x-2">
-                    <div className="w-7 h-7 rounded-lg bg-[#D6B174] flex items-center justify-center text-[#031222] font-bold text-xs">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs" style={{ background: 'linear-gradient(135deg,#D6B174,#C49A52)', color: '#031222' }}>
                       AI
                     </div>
                     <span className="font-bold text-sm text-[#D6B174]">AI Maslahatchi</span>
@@ -1338,10 +1313,9 @@ export default function App() {
                   </p>
                   <button 
                     onClick={() => setActiveTab('ai')}
-                    className="relative z-10 w-full mt-4 bg-[#D6B174] hover:bg-[#B99056] text-[#031222] text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center space-x-1"
+                    className="relative z-10 w-full mt-4 text-xs font-bold py-2.5 rounded-xl transition-all" style={{ background: 'linear-gradient(135deg,#D6B174,#C49A52)', color: '#031222' }}
                   >
-                    <span>Muloqotni boshlash</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
+                    Muloqotni boshlash →
                   </button>
                 </div>
 
@@ -1349,16 +1323,16 @@ export default function App() {
 
             </div>
 
-            {/* Notifications Panel */}
-            <div className="bg-white border border-[#E5E8EB] p-6 rounded-3xl shadow-sm">
-              <h4 className="text-sm font-bold font-display text-[#0B1C2C] mb-4 flex items-center gap-2">
+            {/* Bildirishnomalar */}
+            <div className="p-6 rounded-3xl" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
+              <h4 className="text-sm font-bold font-display text-white mb-4 flex items-center gap-2">
                 <Bell className="w-4 h-4 text-[#D6B174]" /> Oxirgi bildirishnomalar
               </h4>
               <div className="space-y-3">
                 {notifications.map((notif, idx) => (
-                  <div key={idx} className="flex items-start space-x-3 p-3 bg-[#F7F9FA] rounded-xl text-xs border border-[#E5E8EB]/50">
+                  <div key={idx} className="flex items-start space-x-3 p-3 rounded-xl text-xs" style={{ background: 'rgba(11,28,44,0.5)', border: '1px solid rgba(255,255,255,0.05)' }}>
                     <span className="text-[#D6B174] mt-0.5">●</span>
-                    <p className="text-[#212630] font-medium leading-relaxed">{notif}</p>
+                    <p className="text-[#8AA5BD] font-medium leading-relaxed">{notif}</p>
                   </div>
                 ))}
               </div>
@@ -1370,7 +1344,7 @@ export default function App() {
         {/* TAB 2: UNIVERSITETLAR (UNIVERSITIES) */}
         {activeTab === 'universities' && (() => {
           // Unique countries from loaded universities
-          const countryList = Array.from(new Set(allUniversities.map(u => u.country))).map(country => {
+          const countryList = Array.from(new Set(allUniversities.map(u => u.country))).map((country: string) => {
             const unis = allUniversities.filter(u => u.country === country);
             const flagEmoji = unis[0]?.logo || '🌍';
             const countryInfo: Record<string, { desc: string; color: string }> = {
@@ -1381,7 +1355,7 @@ export default function App() {
               'Germaniya':       { desc: 'Bepul ta\'lim imkoniyatlari mavjud', color: '#000000' },
               'Singapur':        { desc: 'Osiyo\'ning eng nufuzli ta\'lim markazi', color: '#EF3340' },
             };
-            const info = countryInfo[country] || { desc: `${unis.length} ta universitet mavjud`, color: '#0B1C2C' };
+            const info = countryInfo[country as string] || { desc: `${unis.length} ta universitet mavjud`, color: '#0B1C2C' };
             return { country, unis, flagEmoji, desc: info.desc, color: info.color };
           });
 
@@ -1403,9 +1377,9 @@ export default function App() {
               {!selectedCountry ? (
                 /* ===== DAVLATLAR RO'YXATI ===== */
                 <>
-                  <div className="bg-white border border-[#E5E8EB] p-5 rounded-3xl shadow-sm">
-                    <h3 className="font-display font-bold text-lg text-[#0B1C2C] mb-1">Ta'lim Olish Mumkin Bo'lgan Davlatlar</h3>
-                    <p className="text-xs text-[#6A727D]">Qiziqtirgan davlatni tanlang — o'sha davlatdagi universitetlar ko'rsatiladi</p>
+                  <div className="p-5 rounded-3xl" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
+                    <h3 className="font-display font-bold text-lg text-white mb-1">Ta'lim Olish Mumkin Bo'lgan Davlatlar</h3>
+                    <p className="text-xs text-[#4A6A8A]">Qiziqtirgan davlatni tanlang — o'sha davlatdagi universitetlar ko'rsatiladi</p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -1413,11 +1387,11 @@ export default function App() {
                       <button
                         key={country}
                         onClick={() => { setSelectedCountry(country); setUniSearch(''); setUniFilterMatch(false); }}
-                        className="bg-white border border-[#E5E8EB] rounded-3xl overflow-hidden hover:shadow-xl hover:border-[#D6B174] transition-all text-left group shadow-sm"
+                        className="rounded-3xl overflow-hidden transition-all text-left group hover:scale-[1.02]" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}
                       >
                         {/* Country header banner */}
-                        <div className="bg-[#0B1C2C] px-6 pt-6 pb-4 relative overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
+                        <div className="px-6 pt-6 pb-4 relative overflow-hidden" style={{ background: 'linear-gradient(135deg, rgba(11,28,44,0.9), rgba(22,40,64,0.8))' }}>
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#D6B174]/5 to-transparent pointer-events-none" />
                           <span className="text-5xl block mb-3">{flagEmoji}</span>
                           <h4 className="font-display font-bold text-lg text-white group-hover:text-[#D6B174] transition-colors leading-tight">
                             {country}
@@ -1426,10 +1400,10 @@ export default function App() {
                         {/* Info footer */}
                         <div className="px-6 py-4 flex items-center justify-between">
                           <div>
-                            <p className="text-xs text-[#6A727D] leading-relaxed">{desc}</p>
+                            <p className="text-xs text-[#4A6A8A] leading-relaxed">{desc}</p>
                           </div>
                           <div className="ml-3 shrink-0 flex flex-col items-end">
-                            <span className="text-[10px] text-[#6A727D] uppercase font-bold tracking-wide">Universitetlar</span>
+                            <span className="text-[10px] text-[#4A6A8A] uppercase font-bold tracking-wide">Universitetlar</span>
                             <span className="text-xl font-bold font-display text-[#D6B174]">{unis.length}</span>
                           </div>
                         </div>
@@ -1446,19 +1420,19 @@ export default function App() {
                 /* ===== TANLANGAN DAVLAT UNIVERSITETLARI ===== */
                 <>
                   {/* Back + Search bar */}
-                  <div className="bg-white border border-[#E5E8EB] p-5 rounded-3xl shadow-sm space-y-4">
+                  <div className="p-5 rounded-3xl space-y-4" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => { setSelectedCountry(null); setUniSearch(''); setUniFilterMatch(false); }}
-                        className="p-2.5 bg-[#F3F5F8] hover:bg-[#D6B174]/15 rounded-xl transition-colors text-[#0B1C2C] hover:text-[#D6B174] shrink-0"
+                        className="p-2.5 rounded-xl transition-colors text-[#D6B174] hover:bg-[#D6B174]/10 shrink-0" style={{ border: '1px solid rgba(214,177,116,0.2)' }}
                       >
                         <ChevronRight className="w-4 h-4 rotate-180" />
                       </button>
                       <div>
-                        <h3 className="font-display font-bold text-base text-[#0B1C2C]">
+                        <h3 className="font-display font-bold text-base text-white">
                           {allUniversities.find(u => u.country === selectedCountry)?.logo} {selectedCountry}
                         </h3>
-                        <p className="text-xs text-[#6A727D]">{allUniversities.filter(u => u.country === selectedCountry).length} ta universitet mavjud</p>
+                        <p className="text-xs text-[#4A6A8A]">{allUniversities.filter(u => u.country === selectedCountry).length} ta universitet mavjud</p>
                       </div>
                     </div>
 
@@ -1469,13 +1443,13 @@ export default function App() {
                           placeholder="Universitet yoki yo'nalish nomini qidiring..."
                           value={uniSearch}
                           onChange={(e) => setUniSearch(e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 bg-[#F3F5F8] border border-transparent rounded-2xl text-sm focus:outline-none focus:border-[#D6B174] focus:bg-white transition-all text-[#212630]"
+                          className="w-full pl-10 pr-4 py-3 rounded-2xl text-sm focus:outline-none transition-all text-white placeholder:text-[#4A6A8A]" style={{ background: 'rgba(11,28,44,0.8)', border: '1px solid rgba(255,255,255,0.06)' }}
                         />
-                        <Search className="w-5 h-5 text-[#6A727D] absolute left-3.5 top-3.5" />
+                        <Search className="w-5 h-5 text-[#4A6A8A] absolute left-3.5 top-3.5" />
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-[#E5E8EB]/50">
+                    <div className="flex items-center justify-between pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                       <div className="flex items-center space-x-2">
                         <input
                           type="checkbox"
@@ -1484,11 +1458,11 @@ export default function App() {
                           onChange={(e) => setUniFilterMatch(e.target.checked)}
                           className="w-4 h-4 accent-[#D6B174] cursor-pointer"
                         />
-                        <label htmlFor="matchToggle" className="text-xs font-semibold text-[#0B1C2C] cursor-pointer">
+                        <label htmlFor="matchToggle" className="text-xs font-semibold text-white cursor-pointer">
                           Profilimga mos keladiganlarini ko'rsat
                         </label>
                       </div>
-                      <span className="text-xs text-[#6A727D] font-medium">{countryUnis.length} ta topildi</span>
+                      <span className="text-xs text-[#4A6A8A] font-medium">{countryUnis.length} ta topildi</span>
                     </div>
                   </div>
 
@@ -1499,42 +1473,43 @@ export default function App() {
                       return (
                         <div
                           key={uni.id}
-                          className="bg-white border border-[#E5E8EB] rounded-2xl overflow-hidden hover:shadow-xl transition-all flex flex-col justify-between group h-full cursor-pointer shadow-sm"
+                          className="rounded-2xl overflow-hidden transition-all flex flex-col justify-between group h-full cursor-pointer hover:scale-[1.01]"
+                          style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}
                           onClick={() => setSelectedUni(uni)}
                         >
                           <div className="p-6 pb-4">
                             <div className="flex justify-between items-start mb-3">
-                              <span className="text-3xl p-2.5 bg-[#F3F5F8] rounded-2xl block">{uni.logo}</span>
+                              <span className="text-3xl p-2.5 rounded-2xl block" style={{ background: 'rgba(214,177,116,0.08)' }}>{uni.logo}</span>
                               <button
                                 onClick={(e) => { e.stopPropagation(); toggleBookmark(uni.id); }}
-                                className="p-2 bg-[#F3F5F8] hover:bg-[#D6B174]/15 rounded-xl transition-colors text-[#6A727D] hover:text-[#D6B174]"
+                                className="p-2 rounded-xl transition-colors text-[#4A6A8A] hover:text-[#D6B174] hover:bg-[#D6B174]/10"
                               >
                                 <Bookmark className={`w-4 h-4 ${isSaved ? 'fill-[#D6B174] text-[#D6B174]' : ''}`} />
                               </button>
                             </div>
-                            <h4 className="font-display font-bold text-base text-[#0B1C2C] group-hover:text-[#D6B174] transition-colors leading-snug line-clamp-1 mb-1">
+                            <h4 className="font-display font-bold text-base text-white group-hover:text-[#D6B174] transition-colors leading-snug line-clamp-1 mb-1">
                               {uni.name}
                             </h4>
-                            <p className="text-xs text-[#6A727D] mb-4">{uni.country}</p>
-                            <p className="text-xs text-[#6A727D] leading-relaxed line-clamp-3">{uni.description}</p>
+                            <p className="text-xs text-[#4A6A8A] mb-4">{uni.country}</p>
+                            <p className="text-xs text-[#6A8AA8] leading-relaxed line-clamp-3">{uni.description}</p>
                           </div>
-                          <div className="px-6 py-4 bg-[#F7F9FA] border-t border-[#E5E8EB] flex items-center justify-between text-xs font-semibold">
+                          <div className="px-6 py-4 flex items-center justify-between text-xs font-semibold" style={{ background: 'rgba(11,28,44,0.5)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                             <div className="flex flex-col">
-                              <span className="text-[10px] text-[#6A727D] uppercase font-bold tracking-wide">Yillik Byudjet</span>
-                              <span className="text-xs font-bold text-[#0B1C2C] font-mono">${uni.budget.toLocaleString()}</span>
+                              <span className="text-[10px] text-[#4A6A8A] uppercase font-bold tracking-wide">Yillik Byudjet</span>
+                              <span className="text-xs font-bold text-white font-mono">${uni.budget.toLocaleString()}</span>
                             </div>
                             <div className="flex flex-col text-right">
-                              <span className="text-[10px] text-[#6A727D] uppercase font-bold tracking-wide">Talab</span>
-                              <span className="text-xs font-bold text-[#0B1C2C]">IELTS {uni.ielts}+</span>
+                              <span className="text-[10px] text-[#4A6A8A] uppercase font-bold tracking-wide">Talab</span>
+                              <span className="text-xs font-bold text-white">IELTS {uni.ielts}+</span>
                             </div>
                           </div>
                         </div>
                       );
                     })}
                     {countryUnis.length === 0 && (
-                      <div className="col-span-full bg-white border border-[#E5E8EB] rounded-3xl p-12 text-center text-[#6A727D]">
+                      <div className="col-span-full rounded-3xl p-12 text-center text-[#4A6A8A]" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.08)' }}>
                         <GraduationCap className="w-12 h-12 mx-auto text-[#D6B174] mb-3 stroke-[1.5]" />
-                        <h4 className="font-display font-bold text-[#0B1C2C] text-sm mb-1">Natija topilmadi</h4>
+                        <h4 className="font-display font-bold text-white text-sm mb-1">Natija topilmadi</h4>
                         <p className="text-xs">Qidiruv parametrlarini o'zgartiring</p>
                       </div>
                     )}
@@ -1547,10 +1522,10 @@ export default function App() {
 
         {/* TAB 3: AI CONSULTANT (AI CHAT) */}
         {activeTab === 'ai' && (
-          <div className="flex-1 bg-white border border-[#E5E8EB] rounded-3xl shadow-sm flex flex-col h-[650px] overflow-hidden animate-fadeIn">
+          <div className="flex-1 rounded-3xl flex flex-col h-[650px] overflow-hidden animate-fadeIn" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
             
             {/* Chat header */}
-            <div className="bg-[#0B1C2C] p-5 text-white flex items-center justify-between border-b border-white/5 shrink-0">
+            <div className="p-5 text-white flex items-center justify-between shrink-0" style={{ background: 'rgba(11,28,44,0.9)', borderBottom: '1px solid rgba(214,177,116,0.1)' }}>
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-2xl bg-[#D6B174] flex items-center justify-center text-[#031222]">
                   <Sparkles className="w-5 h-5 animate-pulse" />
@@ -1575,15 +1550,15 @@ export default function App() {
             </div>
 
             {/* System Profile Context Info Row */}
-            <div className="bg-[#D6B174]/5 px-5 py-2 border-b border-[#E5E8EB] flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-[#0B1C2C] font-semibold">
+            <div className="px-5 py-2 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-white font-semibold" style={{ background: 'rgba(214,177,116,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
               <span>Profil konteksti:</span>
-              <span className="text-[#6A727D]">IELTS: {user?.ielts_score || 'Yo\'q'}</span>
-              <span className="text-[#6A727D]">GPA: {user?.gpa || 'Yo\'q'}</span>
-              <span className="text-[#6A727D]">Byudjet: {user?.budget ? `$${user.budget.toLocaleString()}` : 'Bepul'}</span>
+              <span className="text-[#4A6A8A]">IELTS: {user?.ielts_score || 'Yo\'q'}</span>
+              <span className="text-[#4A6A8A]">GPA: {user?.gpa || 'Yo\'q'}</span>
+              <span className="text-[#4A6A8A]">Byudjet: {user?.budget ? `$${user.budget.toLocaleString()}` : 'Bepul'}</span>
             </div>
 
             {/* Chat Messages Body */}
-            <div className="flex-1 p-5 overflow-y-auto space-y-4 bg-[#F7F9FA]">
+            <div className="flex-1 p-5 overflow-y-auto space-y-4" style={{ background: 'rgba(11,28,44,0.3)' }}>
               {chatHistory.length === 0 ? (
                 <div className="h-full flex flex-col items-center justify-center text-center p-8 text-[#6A727D]">
                   <Bot className="w-12 h-12 text-[#D6B174] mb-3 stroke-[1.5]" />
@@ -1637,40 +1612,40 @@ export default function App() {
             </div>
 
             {/* Quick question chips */}
-            <div className="p-3 bg-[#F3F5F8] border-t border-[#E5E8EB] flex gap-2 overflow-x-auto no-scrollbar shrink-0">
+            <div className="p-3 flex gap-2 overflow-x-auto no-scrollbar shrink-0" style={{ background: 'rgba(11,28,44,0.5)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
               <button 
                 onClick={() => handleSendMessage(undefined, "Menga qaysi universitet mos?")}
-                className="bg-white border border-[#E5E8EB] hover:border-[#D6B174] rounded-full px-4 py-2 text-xs font-semibold shrink-0 transition-all text-[#0B1C2C]"
+                className="rounded-full px-4 py-2 text-xs font-semibold shrink-0 transition-all text-white hover:text-[#D6B174]" style={{ background: 'rgba(22,40,64,0.8)', border: '1px solid rgba(255,255,255,0.08)' }}
               >
                 🎓 Menga qaysi mos?
               </button>
               <button 
                 onClick={() => handleSendMessage(undefined, "Hujjatlarim yetarlimi?")}
-                className="bg-white border border-[#E5E8EB] hover:border-[#D6B174] rounded-full px-4 py-2 text-xs font-semibold shrink-0 transition-all text-[#0B1C2C]"
+                className="rounded-full px-4 py-2 text-xs font-semibold shrink-0 transition-all text-white hover:text-[#D6B174]" style={{ background: 'rgba(22,40,64,0.8)', border: '1px solid rgba(255,255,255,0.08)' }}
               >
                 📄 Hujjatlarim yetarlimi?
               </button>
               <button 
                 onClick={() => handleSendMessage(undefined, "Arizam qaysi bosqichda?")}
-                className="bg-white border border-[#E5E8EB] hover:border-[#D6B174] rounded-full px-4 py-2 text-xs font-semibold shrink-0 transition-all text-[#0B1C2C]"
+                className="rounded-full px-4 py-2 text-xs font-semibold shrink-0 transition-all text-white hover:text-[#D6B174]" style={{ background: 'rgba(22,40,64,0.8)', border: '1px solid rgba(255,255,255,0.08)' }}
               >
                 ⏳ Arizam holati qanday?
               </button>
             </div>
 
             {/* Input form */}
-            <form onSubmit={handleSendMessage} className="p-4 bg-white border-t border-[#E5E8EB] flex items-center space-x-3 shrink-0">
+            <form onSubmit={handleSendMessage} className="p-4 flex items-center space-x-3 shrink-0" style={{ background: 'rgba(11,28,44,0.6)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
               <input 
                 type="text" 
                 placeholder="Savolingizni yozing..."
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                className="flex-1 bg-[#F3F5F8] rounded-2xl px-5 py-3.5 text-xs text-[#212630] placeholder:text-[#6A727D] focus:outline-none focus:bg-white focus:border-[#D6B174] border border-transparent transition-all"
+                className="flex-1 rounded-2xl px-5 py-3.5 text-xs text-white placeholder:text-[#4A6A8A] focus:outline-none transition-all" style={{ background: 'rgba(11,28,44,0.8)', border: '1px solid rgba(255,255,255,0.08)' }}
                 disabled={chatLoading}
               />
               <button 
                 type="submit" 
-                className="bg-[#0B1C2C] text-[#D6B174] p-3.5 rounded-2xl hover:bg-[#B99056] hover:text-[#031222] transition-colors shadow-md shrink-0"
+                className="p-3.5 rounded-2xl transition-all shrink-0" style={{ background: 'linear-gradient(135deg,#D6B174,#C49A52)', color: '#031222' }}
                 disabled={chatLoading}
               >
                 <Send className="w-4 h-4" />
@@ -1685,10 +1660,10 @@ export default function App() {
           <div className="space-y-6 animate-fadeIn">
             
             {/* Applications List Header with New Application button */}
-            <div className="flex justify-between items-center bg-white border border-[#E5E8EB] p-5 rounded-3xl shadow-sm">
+            <div className="flex justify-between items-center p-5 rounded-3xl" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
               <div>
-                <h3 className="font-display font-bold text-lg text-[#0B1C2C]">Hujjat topshirish monitoringi</h3>
-                <p className="text-xs text-[#6A727D]">Arizalaringiz statusi real vaqtda yangilanadi</p>
+                <h3 className="font-display font-bold text-lg text-white">Hujjat topshirish monitoringi</h3>
+                <p className="text-xs text-[#4A6A8A]">Arizalaringiz statusi real vaqtda yangilanadi</p>
               </div>
               <button 
                 onClick={() => {
@@ -1696,7 +1671,7 @@ export default function App() {
                   setActiveTab('universities');
                   showToast('Ariza uchun avval davlat va universitetni tanlang', 'info');
                 }}
-                className="bg-[#0B1C2C] text-[#D6B174] font-bold px-4 py-2.5 rounded-2xl text-xs hover:bg-[#B99056] hover:text-[#031222] transition-colors flex items-center space-x-2 shadow-md"
+                className="font-bold px-4 py-2.5 rounded-2xl text-xs transition-all flex items-center space-x-2" style={{ background: 'linear-gradient(135deg,#D6B174,#C49A52)', color: '#031222' }}
               >
                 <span>+ Yangi Ariza</span>
               </button>
@@ -1706,25 +1681,25 @@ export default function App() {
             <div className="space-y-6">
               {applications.length > 0 ? (
                 applications.map((app) => (
-                  <div key={app.id} className="bg-white border border-[#E5E8EB] rounded-3xl overflow-hidden shadow-sm">
+                  <div key={app.id} className="rounded-3xl overflow-hidden" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
                     {/* Upper */}
-                    <div className="p-6 border-b border-[#E5E8EB] flex flex-col md:flex-row justify-between md:items-center gap-4">
+                    <div className="p-6 flex flex-col md:flex-row justify-between md:items-center gap-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                       <div className="flex items-center space-x-3">
-                        <span className="text-3xl p-2 bg-[#F3F5F8] rounded-2xl">🎓</span>
+                        <span className="text-3xl p-2 rounded-2xl" style={{ background: 'rgba(214,177,116,0.08)' }}>🎓</span>
                         <div>
-                          <h4 className="font-display font-bold text-base text-[#0B1C2C]">{app.universityName}</h4>
-                          <p className="text-xs text-[#6A727D]">{app.program}</p>
+                          <h4 className="font-display font-bold text-base text-white">{app.universityName}</h4>
+                          <p className="text-xs text-[#4A6A8A]">{app.program}</p>
                         </div>
                       </div>
 
                       <div className="flex items-center space-x-4">
                         <div className="flex flex-col md:items-end">
-                          <span className="text-[10px] text-[#6A727D] uppercase font-bold tracking-wider">Topshirilgan Sana</span>
-                          <span className="text-xs font-mono font-bold text-[#0B1C2C]">{app.date}</span>
+                          <span className="text-[10px] text-[#4A6A8A] uppercase font-bold tracking-wider">Topshirilgan Sana</span>
+                          <span className="text-xs font-mono font-bold text-white">{app.date}</span>
                         </div>
                         <span className={`px-3 py-1.5 rounded-full text-xs font-bold ${
-                          app.status.includes('Ko\'rib') ? 'bg-[#D6B174]/10 text-[#D6B174]' :
-                          app.status.includes('Tasdiq') ? 'bg-[#1E9E5A]/10 text-[#1E9E5A]' : 'bg-[#E40016]/10 text-[#E40016]'
+                          app.status.includes('Ko\'rib') ? 'bg-amber-500/15 text-amber-400' :
+                          app.status.includes('Tasdiq') ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'
                         }`}>
                           {app.status}
                         </span>
@@ -1732,20 +1707,20 @@ export default function App() {
                     </div>
 
                     {/* Timeline History and Hujjatlar */}
-                    <div className="p-6 bg-[#F7F9FA] grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6" style={{ background: 'rgba(11,28,44,0.3)' }}>
                       
                       {/* Timeline status history */}
                       <div className="space-y-4">
-                        <h5 className="text-xs font-bold uppercase tracking-wider text-[#6A727D] mb-2">Ariza Tarixi</h5>
-                        <div className="space-y-4 pl-3 relative border-l border-[#E5E8EB]">
+                        <h5 className="text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-2">Ariza Tarixi</h5>
+                        <div className="space-y-4 pl-3 relative" style={{ borderLeft: '1px solid rgba(214,177,116,0.2)' }}>
                           {app.history.map((hist, idx) => (
                             <div key={idx} className="relative pl-4">
                               {/* Node Circle */}
                               <div className="absolute -left-[17px] top-1 w-2.5 h-2.5 rounded-full bg-[#D6B174]"></div>
                               <div className="text-xs">
-                                <span className="font-bold text-[#0B1C2C]">{hist.status}</span>
-                                <span className="text-[10px] text-[#6A727D] ml-2 font-mono">{hist.date}</span>
-                                <p className="text-[11px] text-[#6A727D] mt-0.5 leading-relaxed">{hist.note}</p>
+                                <span className="font-bold text-white">{hist.status}</span>
+                                <span className="text-[10px] text-[#4A6A8A] ml-2 font-mono">{hist.date}</span>
+                                <p className="text-[11px] text-[#4A6A8A] mt-0.5 leading-relaxed">{hist.note}</p>
                               </div>
                             </div>
                           ))}
@@ -1754,7 +1729,7 @@ export default function App() {
 
                       {/* Documents attached */}
                       <div className="space-y-3">
-                        <h5 className="text-xs font-bold uppercase tracking-wider text-[#6A727D] mb-2">Hujjatlar</h5>
+                        <h5 className="text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-2">Hujjatlar</h5>
                         <div className="space-y-2.5">
                           {app.documents.map((doc, idx) => (
                             <a
@@ -1762,11 +1737,11 @@ export default function App() {
                               href={doc.url ? `${doc.url}?auth=${encodeURIComponent(token || '')}` : undefined}
                               target="_blank"
                               rel="noreferrer"
-                              className="flex items-center justify-between p-3 bg-white border border-[#E5E8EB] rounded-2xl text-xs hover:border-[#D6B174]/50 transition-colors"
+                              className="flex items-center justify-between p-3 rounded-2xl text-xs transition-colors hover:bg-[#D6B174]/10" style={{ background: 'rgba(22,40,64,0.6)', border: '1px solid rgba(255,255,255,0.06)' }}
                             >
                               <div className="flex items-center space-x-2 min-w-0">
                                 <FileText className="w-4.5 h-4.5 text-[#D6B174] shrink-0" />
-                                <span className="font-semibold text-[#0B1C2C] truncate">{doc.type}</span>
+                                <span className="font-semibold text-white truncate">{doc.type}</span>
                               </div>
                               <span className={`font-bold flex items-center gap-1 text-[11px] shrink-0 ${
                                 doc.status === 'Tasdiqlangan' ? 'text-[#1E9E5A]' :
@@ -1783,9 +1758,9 @@ export default function App() {
                   </div>
                 ))
               ) : (
-                <div className="bg-white border border-[#E5E8EB] rounded-3xl p-12 text-center text-[#6A727D]">
+                <div className="rounded-3xl p-12 text-center text-[#4A6A8A]" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.08)' }}>
                   <FileText className="w-12 h-12 mx-auto text-[#D6B174] mb-3 stroke-[1.5]" />
-                  <h4 className="font-display font-bold text-[#0B1C2C] text-sm mb-1">Arizalar mavjud emas</h4>
+                  <h4 className="font-display font-bold text-white text-sm mb-1">Arizalar mavjud emas</h4>
                   <p className="text-xs max-w-sm mx-auto mb-4">
                     Sizda hali topshirilgan arizalar mavjud emas. Universitetlardan birini tanlang va birinchi arizangizni boshlang!
                   </p>
@@ -1803,10 +1778,10 @@ export default function App() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               
               {/* Profile details editor (8 cols) */}
-              <div className="lg:col-span-8 bg-white border border-[#E5E8EB] p-6 md:p-8 rounded-3xl shadow-sm space-y-6">
+              <div className="lg:col-span-8 p-6 md:p-8 rounded-3xl space-y-6" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
                 <div>
-                  <h3 className="font-display font-bold text-lg text-[#0B1C2C]">Shaxsiy Ma'lumotlarim</h3>
-                  <p className="text-xs text-[#6A727D]">Profilingizni to'ldirib, o'zingizga mos ta'lim va grantlarni aniqlashtiring</p>
+                  <h3 className="font-display font-bold text-lg text-white">Shaxsiy Ma'lumotlarim</h3>
+                  <p className="text-xs text-[#4A6A8A]">Profilingizni to'ldirib, o'zingizga mos ta'lim va grantlarni aniqlashtiring</p>
                 </div>
 
                 {profileSuccessMsg && (
@@ -1819,81 +1794,81 @@ export default function App() {
                   {/* General details group */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#212630] mb-1.5">Ismingiz</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-1.5">Ismingiz</label>
                       <input 
                         type="text" 
                         value={editFirstName}
                         onChange={(e) => setEditFirstName(e.target.value)}
-                        className="w-full px-4 py-3 bg-[#F3F5F8] border border-transparent rounded-2xl text-xs focus:outline-none focus:border-[#D6B174] focus:bg-white transition-all text-[#212630]"
+                        className="w-full px-4 py-3 rounded-2xl text-xs focus:outline-none transition-all text-white" style={{ background: 'rgba(11,28,44,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#212630] mb-1.5">Familiyangiz</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-1.5">Familiyangiz</label>
                       <input 
                         type="text" 
                         value={editLastName}
                         onChange={(e) => setEditLastName(e.target.value)}
-                        className="w-full px-4 py-3 bg-[#F3F5F8] border border-transparent rounded-2xl text-xs focus:outline-none focus:border-[#D6B174] focus:bg-white transition-all text-[#212630]"
+                        className="w-full px-4 py-3 rounded-2xl text-xs focus:outline-none transition-all text-white" style={{ background: 'rgba(11,28,44,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#212630] mb-1.5">Telefon raqamingiz</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-1.5">Telefon raqamingiz</label>
                       <input 
                         type="tel" 
                         value={editPhone}
                         onChange={(e) => setEditPhone(e.target.value)}
-                        className="w-full px-4 py-3 bg-[#F3F5F8] border border-transparent rounded-2xl text-xs focus:outline-none focus:border-[#D6B174] focus:bg-white transition-all text-[#212630]"
+                        className="w-full px-4 py-3 rounded-2xl text-xs focus:outline-none transition-all text-white" style={{ background: 'rgba(11,28,44,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#212630] mb-1.5">Foydalanuvchi nomi</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-1.5">Foydalanuvchi nomi</label>
                       <input 
                         type="text" 
                         value={user?.username}
                         disabled
-                        className="w-full px-4 py-3 bg-white/5 border border-[#E5E8EB]/50 rounded-2xl text-xs text-[#6A727D] cursor-not-allowed font-mono"
+                        className="w-full px-4 py-3 rounded-2xl text-xs text-[#4A6A8A] cursor-not-allowed font-mono" style={{ background: 'rgba(11,28,44,0.3)', border: '1px solid rgba(255,255,255,0.05)' }}
                       />
                     </div>
                   </div>
 
                   {/* Onboarding score details group */}
-                  <div className="pt-4 border-t border-[#E5E8EB] space-y-4">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#0B1C2C]">Ta'lim va Byudjet o'lchovlari</h4>
+                  <div className="pt-4 space-y-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-white">Ta'lim va Byudjet o'lchovlari</h4>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div>
-                        <label className="block text-xs font-bold uppercase tracking-wider text-[#212630] mb-1.5">Yillik Byudjet ($)</label>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-1.5">Yillik Byudjet ($)</label>
                         <input 
                           type="number" 
                           placeholder="Yillik byudjetingiz"
                           value={editBudget}
                           onChange={(e) => setEditBudget(e.target.value)}
-                          className="w-full px-4 py-3 bg-[#F3F5F8] border border-transparent rounded-2xl text-xs focus:outline-none focus:border-[#D6B174] focus:bg-white transition-all text-[#212630] font-mono"
+                          className="w-full px-4 py-3 rounded-2xl text-xs focus:outline-none transition-all text-white font-mono" style={{ background: 'rgba(11,28,44,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold uppercase tracking-wider text-[#212630] mb-1.5">IELTS Bali</label>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-1.5">IELTS Bali</label>
                         <input 
                           type="number" 
                           step="0.5"
                           placeholder="Masalan: 7.5"
                           value={editIelts}
                           onChange={(e) => setEditIelts(e.target.value)}
-                          className="w-full px-4 py-3 bg-[#F3F5F8] border border-transparent rounded-2xl text-xs focus:outline-none focus:border-[#D6B174] focus:bg-white transition-all text-[#212630] font-mono"
+                          className="w-full px-4 py-3 rounded-2xl text-xs focus:outline-none transition-all text-white font-mono" style={{ background: 'rgba(11,28,44,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold uppercase tracking-wider text-[#212630] mb-1.5">O'rtacha GPA ko'rsatkichi</label>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-1.5">O'rtacha GPA ko'rsatkichi</label>
                         <input 
                           type="number" 
                           step="0.1"
                           placeholder="Masalan: 4.8"
                           value={editGpa}
                           onChange={(e) => setEditGpa(e.target.value)}
-                          className="w-full px-4 py-3 bg-[#F3F5F8] border border-transparent rounded-2xl text-xs focus:outline-none focus:border-[#D6B174] focus:bg-white transition-all text-[#212630] font-mono"
+                          className="w-full px-4 py-3 rounded-2xl text-xs focus:outline-none transition-all text-white font-mono" style={{ background: 'rgba(11,28,44,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}
                         />
                       </div>
                     </div>
@@ -1901,7 +1876,7 @@ export default function App() {
 
                   <button 
                     type="submit" 
-                    className="bg-[#0B1C2C] text-[#D6B174] font-bold px-6 py-3 rounded-2xl text-xs hover:bg-[#B99056] hover:text-[#031222] transition-colors shadow-md"
+                    className="font-bold px-6 py-3 rounded-2xl text-xs transition-all" style={{ background: 'linear-gradient(135deg,#D6B174,#C49A52)', color: '#031222' }}
                   >
                     Ma'lumotlarni saqlash
                   </button>
@@ -1912,16 +1887,16 @@ export default function App() {
               <div className="lg:col-span-4 space-y-6">
                 
                 {/* Document Uploader */}
-                <div className="bg-white border border-[#E5E8EB] p-6 rounded-3xl shadow-sm space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#6A727D]">Hujjat yuklash moduli</h4>
+                <div className="p-6 rounded-3xl space-y-4" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A6A8A]">Hujjat yuklash moduli</h4>
                   
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#212630] mb-1">Hujjat turi</label>
+                      <label className="block text-xs font-bold uppercase tracking-wider text-[#4A6A8A] mb-1">Hujjat turi</label>
                       <select 
                         value={uploadType} 
                         onChange={(e) => setUploadType(e.target.value)}
-                        className="w-full px-3 py-2 bg-[#F3F5F8] border border-transparent rounded-xl text-xs focus:outline-none focus:border-[#D6B174] text-[#212630]"
+                        className="w-full px-3 py-2 rounded-xl text-xs focus:outline-none text-white" style={{ background: 'rgba(11,28,44,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}
                       >
                         <option value="Pasport">Pasport nushasi</option>
                         <option value="IELTS Sertifikati">IELTS / TOEFL</option>
@@ -1933,7 +1908,7 @@ export default function App() {
 
                     {/* Standard upload triggers */}
                     <div className="flex flex-col gap-2">
-                      <label className="cursor-pointer border-2 border-dashed border-[#E5E8EB] hover:border-[#D6B174] rounded-2xl p-6 text-center transition-colors block">
+                      <label className="cursor-pointer border-2 border-dashed rounded-2xl p-6 text-center transition-colors block" style={{ borderColor: 'rgba(214,177,116,0.2)' }}>
                         <input 
                           type="file" 
                           accept="image/*,application/pdf"
@@ -1942,15 +1917,15 @@ export default function App() {
                           disabled={isUploading}
                         />
                         <Upload className="w-8 h-8 text-[#D6B174] mx-auto mb-2" />
-                        <span className="text-xs font-bold text-[#0B1C2C] block">Fayl tanlang</span>
-                        <span className="text-[10px] text-[#6A727D] mt-1 block">PDF yoki Rasm (Maks 15MB)</span>
+                        <span className="text-xs font-bold text-white block">Fayl tanlang</span>
+                        <span className="text-[10px] text-[#4A6A8A] mt-1 block">PDF yoki Rasm (Maks 15MB)</span>
                       </label>
 
                       {/* Camera capture trigger specifically requested for mobile compatibility */}
                       <button 
                         type="button"
                         onClick={triggerCameraMock}
-                        className="w-full bg-[#F3F5F8] hover:bg-[#E5E8EB] text-[#0B1C2C] font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition-colors border border-transparent"
+                        className="w-full font-bold py-2 px-4 rounded-xl text-xs flex items-center justify-center space-x-2 transition-all text-white hover:bg-[#D6B174]/10" style={{ background: 'rgba(11,28,44,0.6)', border: '1px solid rgba(255,255,255,0.08)' }}
                       >
                         <Camera className="w-4 h-4 text-[#D6B174]" />
                         <span>Kamera orqali rasmga olish</span>
@@ -1966,20 +1941,20 @@ export default function App() {
                 </div>
 
                 {/* List of uploaded documents */}
-                <div className="bg-white border border-[#E5E8EB] p-6 rounded-3xl shadow-sm space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#6A727D]">Hujjatlarim ({documents.length})</h4>
+                <div className="p-6 rounded-3xl space-y-4" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A6A8A]">Hujjatlarim ({documents.length})</h4>
                   
                   <div className="space-y-2.5 max-h-[250px] overflow-y-auto no-scrollbar">
                     {documents.map((doc, idx) => (
-                      <div key={idx} className="p-3 bg-[#F7F9FA] border border-[#E5E8EB] rounded-2xl flex items-center justify-between text-xs">
+                      <div key={idx} className="p-3 rounded-2xl flex items-center justify-between text-xs" style={{ background: 'rgba(11,28,44,0.5)', border: '1px solid rgba(255,255,255,0.05)' }}>
                         <div className="flex items-center space-x-2.5 min-w-0">
                           <FileText className="w-4.5 h-4.5 text-[#D6B174] shrink-0" />
                           <div className="min-w-0">
-                            <span className="font-bold text-[#0B1C2C] block truncate">{doc.type}</span>
-                            <span className="text-[9px] text-[#6A727D] font-mono block truncate">{doc.name} • {doc.size}</span>
+                            <span className="font-bold text-white block truncate">{doc.type}</span>
+                            <span className="text-[9px] text-[#4A6A8A] font-mono block truncate">{doc.name} • {doc.size}</span>
                           </div>
                         </div>
-                        <span className="text-[#1E9E5A] font-bold text-[10px] flex items-center gap-1 shrink-0">
+                        <span className="text-emerald-400 font-bold text-[10px] flex items-center gap-1 shrink-0">
                           <CheckCircle2 className="w-3.5 h-3.5" /> Tasdiqlangan
                         </span>
                       </div>
@@ -1988,8 +1963,8 @@ export default function App() {
                 </div>
 
                 {/* Preferences settings & notifications toggle */}
-                <div className="bg-white border border-[#E5E8EB] p-6 rounded-3xl shadow-sm space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#6A727D]">Bildirishnomalar Sozlamalari</h4>
+                <div className="p-6 rounded-3xl space-y-4" style={{ background: 'rgba(22,40,64,0.7)', border: '1px solid rgba(214,177,116,0.1)' }}>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#4A6A8A]">Bildirishnomalar Sozlamalari</h4>
                   <div className="space-y-3 text-xs">
                     <div className="flex items-center justify-between">
                       <span>Status o'zgarishi (Web Push)</span>
@@ -2017,7 +1992,7 @@ export default function App() {
       </main>
 
       {/* MOBILE BOTTOM NAVIGATION BAR */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-[#0B1C2C] text-white border-t border-white/5 flex items-center justify-around px-2 z-40">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 text-white flex items-center justify-around px-2 z-40" style={{ background: 'rgba(7,19,32,0.95)', borderTop: '1px solid rgba(214,177,116,0.1)', backdropFilter: 'blur(12px)' }}>
         <button 
           onClick={() => setActiveTab('home')}
           className={`flex flex-col items-center justify-center flex-1 py-1.5 text-xs font-semibold transition-all ${
@@ -2074,16 +2049,16 @@ export default function App() {
 
       {/* MODAL 1: UNIVERSITY DETAIL POPUP & APPLY */}
       {selectedUni && (
-        <div className="fixed inset-0 bg-[#0B1C2C]/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
-          <div className="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-[#E5E8EB] max-h-[90vh] flex flex-col animate-scaleUp">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn">
+          <div className="rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col animate-scaleUp" style={{ background: '#0F2236', border: '1px solid rgba(214,177,116,0.2)' }}>
             
             {/* Header */}
-            <div className="bg-[#0B1C2C] p-6 text-white flex justify-between items-start border-b border-white/5 shrink-0">
+            <div className="p-6 text-white flex justify-between items-start shrink-0" style={{ background: 'rgba(11,28,44,0.9)', borderBottom: '1px solid rgba(214,177,116,0.1)' }}>
               <div className="flex items-center space-x-3.5">
-                <span className="text-3xl p-2 bg-white/5 rounded-2xl block">{selectedUni.logo}</span>
+                <span className="text-3xl p-2 rounded-2xl block" style={{ background: 'rgba(214,177,116,0.08)' }}>{selectedUni.logo}</span>
                 <div>
                   <h4 className="font-display font-semibold text-lg text-[#D6B174]">{selectedUni.name}</h4>
-                  <p className="text-xs text-[#6A727D]">{selectedUni.country}</p>
+                  <p className="text-xs text-[#4A6A8A]">{selectedUni.country}</p>
                 </div>
               </div>
               <button 
@@ -2091,51 +2066,51 @@ export default function App() {
                   setSelectedUni(null);
                   setIsApplying(false);
                 }}
-                className="p-1.5 bg-white/5 hover:bg-white/10 rounded-xl transition-all text-[#6A727D] hover:text-white"
+                className="p-1.5 hover:bg-white/10 rounded-xl transition-all text-[#4A6A8A] hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Scrollable details */}
-            <div className="flex-1 p-6 overflow-y-auto space-y-6 bg-[#F7F9FA]">
+            <div className="flex-1 p-6 overflow-y-auto space-y-6" style={{ background: 'rgba(11,28,44,0.3)' }}>
               
               {!isApplying ? (
                 <>
                   <div className="space-y-2">
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-[#6A727D]">Universitet Haqida</h5>
-                    <p className="text-xs text-[#212630] leading-relaxed">
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-[#4A6A8A]">Universitet Haqida</h5>
+                    <p className="text-xs text-[#8AA5BD] leading-relaxed">
                       {selectedUni.description}
                     </p>
                   </div>
 
                   {/* Requirements & Budget Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-white border border-[#E5E8EB] p-4 rounded-2xl">
-                      <span className="text-[10px] text-[#6A727D] uppercase font-bold tracking-wider">Yillik Ta'lim Narxi</span>
-                      <p className="text-base font-bold font-mono text-[#0B1C2C] mt-1">
+                    <div className="p-4 rounded-2xl" style={{ background: 'rgba(22,40,64,0.6)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <span className="text-[10px] text-[#4A6A8A] uppercase font-bold tracking-wider">Yillik Ta'lim Narxi</span>
+                      <p className="text-base font-bold font-mono text-white mt-1">
                         ${selectedUni.budget.toLocaleString()} / yil
                       </p>
-                      <p className="text-[10px] text-[#6A727D] mt-0.5">Kontrakt to'lovlari yo'nalishga qarab farqlanishi mumkin.</p>
+                      <p className="text-[10px] text-[#4A6A8A] mt-0.5">Kontrakt to'lovlari yo'nalishga qarab farqlanishi mumkin.</p>
                     </div>
 
-                    <div className="bg-white border border-[#E5E8EB] p-4 rounded-2xl">
-                      <span className="text-[10px] text-[#6A727D] uppercase font-bold tracking-wider">Grant va Chegirmalar</span>
-                      <p className="text-xs font-bold text-[#1E9E5A] mt-1">
+                    <div className="p-4 rounded-2xl" style={{ background: 'rgba(22,40,64,0.6)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <span className="text-[10px] text-[#4A6A8A] uppercase font-bold tracking-wider">Grant va Chegirmalar</span>
+                      <p className="text-xs font-bold text-emerald-400 mt-1">
                         {selectedUni.grantInfo}
                       </p>
                     </div>
 
-                    <div className="bg-white border border-[#E5E8EB] p-4 rounded-2xl">
-                      <span className="text-[10px] text-[#6A727D] uppercase font-bold tracking-wider">IELTS Talabi</span>
-                      <p className="text-sm font-bold text-[#0B1C2C] mt-1">
+                    <div className="p-4 rounded-2xl" style={{ background: 'rgba(22,40,64,0.6)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <span className="text-[10px] text-[#4A6A8A] uppercase font-bold tracking-wider">IELTS Talabi</span>
+                      <p className="text-sm font-bold text-white mt-1">
                         IELTS {selectedUni.ielts} yoki undan yuqori
                       </p>
                     </div>
 
-                    <div className="bg-white border border-[#E5E8EB] p-4 rounded-2xl">
-                      <span className="text-[10px] text-[#6A727D] uppercase font-bold tracking-wider">GPA O'rtacha Baho Talabi</span>
-                      <p className="text-sm font-bold text-[#0B1C2C] mt-1">
+                    <div className="p-4 rounded-2xl" style={{ background: 'rgba(22,40,64,0.6)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                      <span className="text-[10px] text-[#4A6A8A] uppercase font-bold tracking-wider">GPA O'rtacha Baho Talabi</span>
+                      <p className="text-sm font-bold text-white mt-1">
                         O'rtacha GPA: {selectedUni.gpa} (5.0 balldan)
                       </p>
                     </div>
@@ -2143,10 +2118,10 @@ export default function App() {
 
                   {/* Program options available */}
                   <div className="space-y-2">
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-[#6A727D]">Dasturlar & Yo'nalishlar</h5>
+                    <h5 className="text-xs font-bold uppercase tracking-wider text-[#4A6A8A]">Dasturlar & Yo'nalishlar</h5>
                     <div className="flex flex-wrap gap-2">
                       {selectedUni.programs.map((program, idx) => (
-                        <span key={idx} className="bg-white border border-[#E5E8EB] rounded-xl px-3 py-1.5 text-xs font-semibold text-[#0B1C2C]">
+                        <span key={idx} className="rounded-xl px-3 py-1.5 text-xs font-semibold text-[#D6B174]" style={{ background: 'rgba(214,177,116,0.1)', border: '1px solid rgba(214,177,116,0.15)' }}>
                           {program}
                         </span>
                       ))}
@@ -2240,6 +2215,7 @@ export default function App() {
                         { label: "Metrika (Tug'ilganlik guvohnomasi)", file: applyBirthCertFile, set: setApplyBirthCertFile },
                         { label: 'ID Karta', file: applyIdCardFile, set: setApplyIdCardFile },
                         { label: 'Zagran pasport', file: applyForeignPassportFile, set: setApplyForeignPassportFile },
+                        { label: '9-11 sinf attestati', file: applyAttestatFile, set: setApplyAttestatFile },
                       ].map((item, idx) => (
                         <label key={idx} className={`flex items-center gap-3 p-3 rounded-2xl border cursor-pointer transition-all ${
                           item.file ? 'border-[#1E9E5A] bg-[#1E9E5A]/5' : 'border-[#E5E8EB] bg-white hover:border-[#D6B174]/50'
@@ -2283,10 +2259,10 @@ export default function App() {
 
             {/* Footer triggers */}
             {!isApplying && (
-              <div className="p-4 bg-[#F3F5F8] border-t border-[#E5E8EB] flex gap-3 shrink-0">
+              <div className="p-4 flex gap-3 shrink-0" style={{ background: 'rgba(11,28,44,0.5)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
                 <button 
                   onClick={() => toggleBookmark(selectedUni.id)}
-                  className="flex-1 bg-white hover:bg-[#F3F5F8] border border-[#E5E8EB] font-bold text-[#0B1C2C] py-3.5 rounded-2xl text-xs transition-colors flex items-center justify-center space-x-2"
+                  className="flex-1 font-bold text-[#D6B174] py-3.5 rounded-2xl text-xs transition-all flex items-center justify-center space-x-2 hover:bg-[#D6B174]/10" style={{ border: '1px solid rgba(214,177,116,0.2)' }}
                 >
                   <Bookmark className={`w-4 h-4 ${bookmarks.includes(selectedUni.id) ? 'fill-[#D6B174] text-[#D6B174]' : ''}`} />
                   <span>{bookmarks.includes(selectedUni.id) ? 'Saqlangan' : 'Saqlab Qo\'yish'}</span>
@@ -2295,9 +2271,10 @@ export default function App() {
                   onClick={() => {
                     resetApplyForm();
                     setApplyContactPhone(user?.phone || '');
+                    setApplyEmail(user?.username ? `${user.username}@eduvisa.uz` : '');
                     setIsApplying(true);
                   }}
-                  className="flex-1 bg-[#0B1C2C] text-[#D6B174] hover:bg-[#B99056] hover:text-[#031222] font-bold py-3.5 rounded-2xl text-xs transition-all shadow-md flex items-center justify-center space-x-1.5"
+                  className="flex-1 font-bold py-3.5 rounded-2xl text-xs transition-all flex items-center justify-center space-x-1.5" style={{ background: 'linear-gradient(135deg,#D6B174,#C49A52)', color: '#031222' }}
                 >
                   <span>Ariza topshirish</span>
                   <ChevronRight className="w-4 h-4" />
